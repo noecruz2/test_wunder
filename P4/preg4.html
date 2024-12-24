@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Alumnos</title>
+    <style>
+
+        /*Se define los estilos de la tabla, tiene un ancho del 100%, 
+        las celdas no tendran espacio entre ellas*/
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /*Aplica un borde de 1px color negro, texto centrado con  un margen de 8px*/
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+
+        /*Las cabeceras tienen un color azul, con texto azul*/
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /*El selector de clase define que los alumnos reprobados serán de color rojo*/
+        .reprobado {
+            background-color: #ffcccc; /* Rojo claro */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Se crea una tabla con id, definiendo las cabeceras -->
+    <table id="tablaAlumnos">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Parcial 1</th>
+                <th>Parcial 2</th>
+                <th>Parcial 3</th>
+                <th>Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filas de alumnos se generarán dinámicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        /*Aqui se define el arreglo establecido en el pdf*/
+        const alumnos = [
+            { nombre: "Jesús", apellidoP: "Paniagua", apellidoM: "Hernández", parcial1: 6, parcial2: 5, parcial3: 10 },
+            { nombre: "Mauricio", apellidoP: "Salgado", apellidoM: "Flores", parcial1: 8, parcial2: 10, parcial3: 9 },
+            { nombre: "Diana", apellidoP: "Lopez", apellidoM: "García", parcial1: 6, parcial2: 5, parcial3: 0 }
+        ];
+
+        /*Función para calcular el promedio*/
+        const calcularPromedio = (parcial1, parcial2, parcial3) => (parcial1 + parcial2 + parcial3) / 3;
+
+        /*Referencia a la tabla*/
+        const tabla = document.getElementById("tablaAlumnos").querySelector("tbody");
+
+        /*Generar filas de la tabla*/
+        alumnos.forEach(alumno => {
+            const promedio = calcularPromedio(alumno.parcial1, alumno.parcial2, alumno.parcial3);
+            const fila = document.createElement("tr");
+
+            /*Agregar clase para resaltar si el promedio es reprobatorio*/
+            if (promedio < 6) {
+                fila.classList.add("reprobado");
+            }
+
+            /*Crear celdas dinamicas*/
+            fila.innerHTML = `
+                <td>${alumno.nombre}</td>
+                <td>${alumno.apellidoP}</td>
+                <td>${alumno.apellidoM}</td>
+                <td>${alumno.parcial1}</td>
+                <td>${alumno.parcial2}</td>
+                <td>${alumno.parcial3}</td>
+                <td>${promedio.toFixed(2)}</td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+    </script>
+</body>
+</html>
